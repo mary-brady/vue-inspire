@@ -2,9 +2,10 @@ var express = require('express')
 var bp = require('body-parser')
 var server = express()
 var cors = require('cors')
-var port = 3000
+var port = process.env.PORT || 3000
+server.use(express.static(__dirname + '/../client/dist'))
 
-var whitelist = 'http://localhost:8080'
+var whitelist = ['http://localhost:8080', 'https://vuespire.heroku.com'];
 var corsOptions = {
     origin: function (origin, callback) {
         var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
@@ -23,7 +24,7 @@ server.use(bp.urlencoded({
 
 let auth = require('./server-assets/auth/routes')
 server.use(auth.session)
-server.use(auth.router);
+server.use(auth.router)
 
 server.use((req, res, next) => {
     if (!req.session.uid) {

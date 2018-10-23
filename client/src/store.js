@@ -2,18 +2,20 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Axios from 'axios'
 import router from "./router"
-import { setupMaster } from 'cluster';
 
 Vue.use(Vuex)
 
+var production = !window.location.host.includes('localhost');
+var baseUrl = production ? '//vuespire.herokuapp.com' : '//localhost:3000';
+
 let api = Axios.create({
-  baseURL: 'api/',
+  baseURL: baseUrl + 'api/',
   timeout: 3000,
   withCredentials: true
 })
 
 let auth = Axios.create({
-  baseURL: 'api/auth/',
+  baseURL: baseUrl + 'auth/',
   timeout: 3000,
   withCredentials: true
 })

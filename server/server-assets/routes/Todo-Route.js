@@ -1,8 +1,8 @@
 let router = require('express').Router()
 let Todo = require('../models/Todo')
 
-router.get('/', (req, res, next) => {
-    Todo.find()
+router.get('/:id', (req, res, next) => {
+    Todo.find({ authorId: req.params.id })
         .then(data => {
             res.send(data)
         })
