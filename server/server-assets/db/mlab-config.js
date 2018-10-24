@@ -1,5 +1,5 @@
 var mongoose = require('mongoose')
-var connectionString = 'mongodb://admin2:admin123@ds050077.mlab.com:50077/vue-inspire'
+var connectionString = 'mongodb://mary:admin123@ds050077.mlab.com:50077/vue-inspire'
 var connection = mongoose.connection
 
 mongoose.connect(connectionString, { useMongoClient: true })
