@@ -63,6 +63,7 @@ export default {
       this.$store.dispatch("register", this.newUser);
     },
     loginUser() {
+      debugger;
       this.$store.dispatch("login", this.creds);
     }
   }

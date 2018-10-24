@@ -6,7 +6,7 @@ import router from "./router"
 Vue.use(Vuex)
 
 var production = !window.location.host.includes('localhost');
-var baseUrl = production ? '//vuespire.herokuapp.com' : '//localhost:3000';
+var baseUrl = production ? '//vuespire.herokuapp.com' : '//localhost:3000/';
 
 let api = Axios.create({
   baseURL: baseUrl + 'api/',
@@ -87,29 +87,49 @@ export default new Vuex.Store({
           commit('setBg', res.data.hits.largeImageUrl)
         })
     },
+    //Todo Stuff
+    addTodo({ commit, dispatch }, todoData) {
+      api.post('todos', todoData)
+        .then(res => {
+          console.log('todo res:', res)
+          commit('setTodos', res.data)
+        })
+    },
+    editTodo({ commit, dispatch }, todoData) {
+      api.put('todos/' + todoData._id, todoData)
+        .then(res => {
+          commit('setTodos', res.data)
+        })
+    },
     //Login Stuff
     register({ commit, dispatch }, newUser) {
-      auth.post("register", newUser).then(res => {
-        commit("setUser", res.data);
-        router.push({ name: "home" });
-      })
+      auth.post("register", newUser)
+        .then(res => {
+          commit("setUser", res.data);
+          router.push({ name: "home" });
+        })
     },
     authenticate({ commit, dispatch }) {
-      auth.get("authenticate").then(res => {
-        commit("setUser", res.data);
-      })
+      auth.get("authenticate")
+        .then(res => {
+          commit("setUser", res.data)
+          router.push({ name: 'home' })
+          dispatch('getTodos', res.data._id)
+        })
     },
     login({ commit, dispatch }, creds) {
-      auth.post("login", creds).then(res => {
-        commit("setUser", res.data);
-        dispatch('getTodos', res.data._id)
-      })
+      auth.post("login", creds)
+        .then(res => {
+          commit("setUser", res.data);
+          dispatch('getTodos', res.data._id)
+        })
     },
     logout({ commit }) {
-      auth.delete("logout").then(() => {
-        commit("clearUser");
-        router.push({ name: "home" })
-      })
+      auth.delete("logout")
+        .then(() => {
+          commit("clearUser");
+          router.push({ name: "home" })
+        })
     }
   }
 })
