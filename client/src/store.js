@@ -25,13 +25,24 @@ let weatherApi = Axios.create({
   timeout: 3000
 })
 
+let apiKey = "10484092-b16f4b86c2e5400452c6b422d"
+let imgUrl = ("https://pixabay.com/api/" + apiKey + "/?q=background+images&image_type=photo")
+function random() {
+  return Math.floor(Math.random() * 3) + 1;
+}
+
+let imageApi = Axios.create({
+  baseURL: imgUrl,
+  timeout: 3000
+})
+
 
 export default new Vuex.Store({
   state: {
     user: {},
     todos: {},
     weather: {},
-    image: {},
+    image: '',
     quote: {}
 
   },
@@ -46,13 +57,15 @@ export default new Vuex.Store({
       state.user = {},
         state.todos = {},
         state.weather = {},
-        state.image = {},
+        state.image = '',
         state.quote = {}
     },
     setTodos(state, todos) {
       state.todos = todos
+    },
+    setBg(state, img) {
+      state.image = img
     }
-
   },
   actions: {
     getWeather({ commit }) {
@@ -65,6 +78,13 @@ export default new Vuex.Store({
       api.get("todos/" + userId)
         .then(res => {
           commit('setTodos', res.data)
+        })
+    },
+    getBg({ commit }) {
+      imageApi.get('')
+        .then(res => {
+          console.log("image data: ", res)
+          commit('setBg', res.data.hits.largeImageUrl)
         })
     },
     //Login Stuff

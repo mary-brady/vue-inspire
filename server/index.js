@@ -43,7 +43,7 @@ server.use((req, res, next) => {
 
 //YOUR ROUTES HERE!!!!!!
 let todoRoutes = require('./server-assets/routes/Todo-Route')
-server.use('/api/boards', todoRoutes)
+server.use('/api/todos', todoRoutes)
 
 
 //Catch all
