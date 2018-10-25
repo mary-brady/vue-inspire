@@ -3,9 +3,14 @@
     <div class="row">
       <div class="col-md-12">
       <div class="weather">
-        <p>{{weather.main.temp}}°F</p>
-        <p>{{weather.name}}</p>
+        <p>{{weather.main.temp}}°F in {{weather.name}}</p>
         <p>{{weather.weather[0].description}}</p>
+        <form @submit.prevent="changeWeather">
+        <div class="form-group">
+          <input type="text" v-model="newWeather.newZip" placeholder="Zip Code">
+        <button class="btn btn-primary" type="submit">Change Location</button>
+        </div>
+        </form>
       </div>
       </div>
     </div>
@@ -19,6 +24,13 @@ import Login from "@/views/Login.vue";
 
 export default {
   name: "home",
+  data() {
+    return {
+      newWeather: {
+        newZip: ""
+      }
+    };
+  },
   created() {
     if (!this.$store.state.user._id) {
       this.$router.push({ name: "login" });
@@ -34,6 +46,11 @@ export default {
     },
     weather() {
       return this.$store.state.weather;
+    }
+  },
+  methods: {
+    changeWeather() {
+      this.$store.dispatch("changeWeather", parseFloat(this.newWeather.newZip));
     }
   }
 };

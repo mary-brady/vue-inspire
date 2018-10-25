@@ -24,6 +24,11 @@ let weatherApi = Axios.create({
   baseURL: "http://api.openweathermap.org/data/2.5/weather?q=boise&&APPID=bd82255fd0a21fa1238699b9eda2ee35&units=imperial",
   timeout: 3000
 })
+
+let changeWeatherApi = Axios.create({
+  baseURL: "http://api.openweathermap.org/data/2.5/",
+  timeout: 3000
+})
 //https://cors-anywhere.herokuapp.com/
 
 let apiKey = "10484092-b16f4b86c2e5400452c6b422d"
@@ -71,6 +76,14 @@ export default new Vuex.Store({
   actions: {
     getWeather({ commit }) {
       weatherApi.get("")
+        .then(res => {
+          res.data.main.temp = Math.floor(res.data.main.temp)
+          commit('setWeather', res.data)
+        })
+    },
+    changeWeather({ commit }, newZip) {
+      let appKey = 'APPID=1916b52ea9bd198c4819da20595ab56b'
+      changeWeatherApi.get("" + "weather?zip=" + newZip + ",us&" + appKey + "&units=imperial")
         .then(res => {
           res.data.main.temp = Math.floor(res.data.main.temp)
           commit('setWeather', res.data)
