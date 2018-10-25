@@ -21,9 +21,10 @@ let auth = Axios.create({
 })
 
 let weatherApi = Axios.create({
-  baseURL: "https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/weather?q=boise&&APPID=bd82255fd0a21fa1238699b9eda2ee35",
+  baseURL: "http://api.openweathermap.org/data/2.5/weather?q=boise&&APPID=bd82255fd0a21fa1238699b9eda2ee35&units=imperial",
   timeout: 3000
 })
+//https://cors-anywhere.herokuapp.com/
 
 let apiKey = "10484092-b16f4b86c2e5400452c6b422d"
 let imgUrl = ("https://pixabay.com/api/" + apiKey + "/?q=background+images&image_type=photo")
@@ -71,6 +72,7 @@ export default new Vuex.Store({
     getWeather({ commit }) {
       weatherApi.get("")
         .then(res => {
+          res.data.main.temp = Math.floor(res.data.main.temp)
           commit('setWeather', res.data)
         })
     },
